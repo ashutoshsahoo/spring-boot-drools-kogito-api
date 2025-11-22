@@ -39,6 +39,6 @@ query FindApproved
 end
 
 query FindNotApprovedIdAndAmount
-    /loanApplications[ !approved, $id: id, $amount : amount ]
+    /loanApplications[ !approved, id : id, amount : amount ]
 end
 

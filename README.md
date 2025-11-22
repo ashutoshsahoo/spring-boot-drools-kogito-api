@@ -45,29 +45,56 @@ Once the service is up and running, you can use the following examples to intera
 Returns approved loan applications from the given facts:
 
 ```sh
-curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"maxAmount":5000,"loanApplications":[{"id":"ABC10001","amount":2000,"deposit":100,"applicant":{"age":45,"name":"John"}}, {"id":"ABC10002","amount":5000,"deposit":100,"applicant":{"age":25,"name":"Paul"}}, {"id":"ABC10015","amount":1000,"deposit":100,"applicant":{"age":12,"name":"George"}}]}' http://localhost:8080/find-approved
+curl --location 'http://localhost:8080/find-approved' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--data '{
+    "maxAmount": 5000,
+    "loanApplications": [
+        {
+            "id": "ABC10001",
+            "amount": 2000,
+            "deposit": 100,
+            "applicant": {
+                "age": 45,
+                "name": "John"
+            }
+        },
+        {
+            "id": "ABC10002",
+            "amount": 5000,
+            "deposit": 100,
+            "applicant": {
+                "age": 25,
+                "name": "Paul"
+            }
+        },
+        {
+            "id": "ABC10015",
+            "amount": 1000,
+            "deposit": 100,
+            "applicant": {
+                "age": 12,
+                "name": "George"
+            }
+        }
+    ]
+}'
 ```
-or on windows
 
-```sh
-curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -d "{\"maxAmount\":5000,\"loanApplications\":[{\"id\":\"ABC10001\",\"amount\":2000,\"deposit\":100,\"applicant\":{\"age\":45,\"name\":\"John\"}}, {\"id\":\"ABC10002\",\"amount\":5000,\"deposit\":100,\"applicant\":{\"age\":25,\"name\":\"Paul\"}}, {\"id\":\"ABC10015\",\"amount\":1000,\"deposit\":100,\"applicant\":{\"age\":12,\"name\":\"George\"}}]}" http://localhost:8080/find-approved
-```
-
-As response an array of loan applications is returned.
-
-Example response:
+Response:
 
 ```json
 [
   {
-    "id":"ABC10001",
-    "applicant":{
-      "name":"John",
-      "age":45
+    "id": "ABC10001",
+    "applicant": {
+      "name": "John",
+      "age": 45
     },
-    "amount":2000,
-    "deposit":100,
-    "approved":true
+    "amount": 2000,
+    "deposit": 100,
+    "approved": true
   }
 ]
 ```
@@ -77,22 +104,67 @@ Example response:
 Returns ids and amount values of rejected loan applications from the given facts:
 
 ```sh
-curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"maxAmount":5000,"loanApplications":[{"id":"ABC10001","amount":2000,"deposit":100,"applicant":{"age":45,"name":"John"}}, {"id":"ABC10002","amount":5000,"deposit":100,"applicant":{"age":25,"name":"Paul"}}, {"id":"ABC10015","amount":1000,"deposit":100,"applicant":{"age":12,"name":"George"}}]}' http://localhost:8080/find-not-approved-id-and-amount
+curl --location 'http://localhost:8080/find-not-approved-id-and-amount' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--data '{
+    "maxAmount": 5000,
+    "loanApplications": [
+        {
+            "id": "ABC10001",
+            "amount": 2000,
+            "deposit": 100,
+            "applicant": {
+                "age": 45,
+                "name": "John"
+            }
+        },
+        {
+            "id": "ABC10002",
+            "amount": 5000,
+            "deposit": 100,
+            "applicant": {
+                "age": 25,
+                "name": "Paul"
+            }
+        },
+        {
+            "id": "ABC10015",
+            "amount": 1000,
+            "deposit": 100,
+            "applicant": {
+                "age": 12,
+                "name": "George"
+            }
+        }
+    ]
+}'
 ```
 
-As response an array of loan application ids and amount values is returned.
-
-Example response:
+Response:
 
 ```json
 [
   {
-    "$amount":5000,
-    "$id":"ABC10002"
+    "amount": 5000,
+    "id": "ABC10002"
   },
   {
-    "$amount":1000,
-    "$id":"ABC10015"
+    "amount": 1000,
+    "id": "ABC10015"
   }
 ]
+```
+
+
+## Generate a project
+
+```sh
+mvn archetype:generate \
+    -DarchetypeGroupId=org.kie.kogito \
+    -DarchetypeArtifactId=kogito-spring-boot-archetype \
+    -DgroupId=in.ashu.practice -DartifactId=spring-boot-drools-kogito-api \
+    -DarchetypeVersion=10.1.0 \
+    -Dversion=1.0.0-SNAPSHOT \
+    -Dstarters=rules
 ```
